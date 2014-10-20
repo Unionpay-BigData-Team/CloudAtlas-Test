@@ -1,0 +1,10 @@
+. $APP_HOME/env/DEV_hbk.env
+
+export cp=${JAR_HOME}:${JAR_HOME}/config:${JAR_HOME}/*:${JAR_HOME}/magpie/*:${HIVE_BIN}/../lib/*:${HADOOP_BIN}/../*:${HADOOP_BIN}/../conf:${HBASE_HOME}/conf:$CLASSPATH
+
+java -cp ${cp} ${BILL_CALSSNM} detail yzwang  5309851201299958 15 1
+java -cp ${cp} ${BILL_CALSSNM} bill yzwang  010114010101704255 201311
+java -cp ${cp} ${BILL_CALSSNM} trend yzwang  010114010101704255 201311
+                      
+scan 'hbt_hbk_bill_month_usr'
+scan 'hbt_hbk_bill_month_card'
