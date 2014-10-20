@@ -1,0 +1,77 @@
+#DB2--线上的总笔数和总金额
+select count(distinct(card_no)) as card_num,count(1) as trans_cnt ,sum(trans_at) as trans_at
+from PPAP_SOR.TBL_EDW_SOR_HBK_TRANS_LOG
+where settle_dt='20131101' and
+trans_at>0                                      and
+( trans_id_cd in ('S56','S22','S20','S80') or 
+(online_trans_id in ('01', '03'))
+)                                               and                              
+(resp_id_4=47 or resp_cd='00000' or resp_cd='0000000')
+ and trans_flag<>'0'
+;
+#Hive---明细表线上的总笔数和总金额
+select count(distinct(card_no)) as card_num,count(1) as trans_cnt,sum(trans_at) as trans_at
+from hbkdb.tbl_hbk_dtl_trans_log
+where hp_settle_dt='20131101'
+ and
+trans_at>0                                      and
+--( trans_id_cd in ('S56','S22','S20','S80') or 
+--(online_trans_id in ('01', '03'))
+--)                                               and                              
+(resp_id_4=47 or resp_cd='00000' or resp_cd='0000000') and 
+trans_flag<>'0'
+;
+#        1106376  49487796228
+#814560  1056023 101469725102
+#Hive--ACC表线上的总笔数和总金额
+select count(distinct(card_no)) as card_num,stat_dim_id,sum(trans_cnt),sum(trans_at) from hbkdb.tbl_hbk_scl_risk_stat_day_acc
+where hp_settle_dt='20131101' and hp_channel=1
+group by stat_dim_id
+;
+
+#DB2--线下的总笔数和总金额
+select count(distinct(card_no)) as card_num,count(1) as trans_cnt ,sum(trans_at) as trans_at
+from PPAP_SOR.TBL_EDW_SOR_HBK_TRANS_LOG
+where settle_dt='20131101' and
+trans_at>0                                      and
+( trans_id_cd in ('S56','S22','S20','S80') )   and                              
+(resp_id_4=47 or resp_cd='00000' or resp_cd='0000000')
+ and trans_flag='0'
+;
+#Hive---明细表线下的总卡数、总笔数和总金额
+select count(distinct(card_no)) as card_num,count(1) as trans_cnt,sum(trans_at) as trans_at
+from hbkdb.tbl_hbk_dtl_trans_log
+where hp_settle_dt='20131101'
+ and
+trans_at>0                                      and
+( trans_id_cd in ('S56','S22','S20','S80') )        and                              
+(resp_id_4=47 or resp_cd='00000' or resp_cd='0000000')
+ and trans_flag='0'
+;
+#Hive--ACC表线下的总笔数和总金额
+select count(distinct(card_no)) as card_num,sum(trans_cnt),sum(trans_at) from hbkdb.tbl_hbk_scl_risk_stat_day_acc
+where hp_settle_dt='20131101' and hp_channel=0
+group by stat_dim_id
+;
+#21875765        9680635068577
+
+#补充案例#
+#day_acc需与day_rec记录符合
+select count(distinct card_no), sum(trans_cnt), sum(trans_at) 
+from hbkdb.tbl_hbk_scl_risk_stat_day_acc
+where hp_settle_dt='20131102' and (stat_dim_id='1' or stat_dim_id='7');
+#25663424        34230494        7190282909849
+
+select count(*), 
+	sum(web_day_cnt+nocard_day_cnt+offline_day_cnt), 
+	sum(web_day_at+nocard_day_at+offline_day_at) 
+from hbkdb.tbl_hbk_scl_risk_stat_day_rec 
+where hp_settle_dt='20131102' ;
+#25663424        34230494        7190282909849
+
+
+
+
+
+
+
