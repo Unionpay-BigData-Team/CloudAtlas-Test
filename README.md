@@ -15,14 +15,14 @@
 # 如何更新fork后的代码
 - 在本地装好github客户端，或者git客户端
 - clone 自己的fork分支到本地，可以直接使用github客户端，clone到本地，如果使用命令行，命令为：<br />
-  `git clone git@github.com:break123/three.js.git three.js`
+  `git clone git://github.com/Unionpay-BigData-Team/CloudAtlas-Test.git CloudAtlas-Test`
 - 增加源分支地址到你项目远程分支列表中(此处是关键)，命令为：<br />
-  `git remote add mrdoob git://github.com/mrdoob/three.js.git`<br />
+  `git remote add myPro git://github.com/Unionpay-BigData-Team/CloudAtlas-Test.git`<br />
   此处可使用git remote -v查看远程分支列表
 - fetch源分支的新版本到本地<br />
-  `git fetch mrdoob`
+  `git fetch myPro`
 - 合并两个版本的代码<br />
-  `git merge mrdoob/master`
+  `git merge myPro/master`
 - 将合并后的代码push到github上去<br />
   `git push origin master`
   
